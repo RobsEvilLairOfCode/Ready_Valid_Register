@@ -37,8 +37,6 @@ module fifo #(
         end else begin //Reset signal is low
 
             if(read_enable && !empty) begin //If a read operation is signaled and there is something to read...
-                data_out <= memory_array[read_pointer[POINTER_WIDTH-1:0]];
-
                 read_pointer <= read_pointer + 1;
 
                 empty <= (read_pointer + 1 == write_pointer);
@@ -56,5 +54,10 @@ module fifo #(
             end
           
         end
+    end
+
+    //ASYNC read for CDC usage
+    always_comb begin
+        data_out = memory_array[read_pointer[POINTER_WIDTH-1:0]];
     end
 endmodule
